@@ -37,30 +37,33 @@ The application operates entirely on the client side with zero latency, utilizin
 +---------------+  +---------------+  +---------------+  +---------------+  +---------------+
 
 ⚙️ Steps to Run the Project
-1. Navigate to the Project Folder
-bash
 
+1. Navigate to the Project Folder
+
+bash
 
 cd C:\Users\vdman\.gemini\antigravity\scratch\rag-resume-analyzer
+
 2. Install Dependencies
+
 bash
 
-
 npm install
+
 3. Run Development Mode
+
 To launch the hot-reloading development server:
 
 bash
-
 
 npm run dev
 Open your browser at 👉 http://localhost:3000/
 
 4. Build for Production
+
 To generate an optimized production bundle:
 
 bash
-
 
 npm run build
 📂 Project Structure
