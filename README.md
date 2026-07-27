@@ -1,16 +1,71 @@
-# React + Vite
+🏗️ System Architecture & RAG Workflow
+The application operates entirely on the client side with zero latency, utilizing a lightweight TF-IDF and Cosine Similarity vector engine to match parsed resume chunks against an embedded ATS Knowledge Base and target Job Description requirements.
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+                    +--------------------------------+
+                    | Upload Resume (PDF / TXT / MD) |
+                    +---------------+----------------+
+                                    |
+                                    v
+                     +--------------+---------------+
+                     | Text Extractor & PDF Parser  |
+                     +--------------+---------------+
+                                    |
+                                    v
+                     +--------------+---------------+
+                     | Structural & Bullet Chunker  |
+                     +--------------+---------------+
+                                    |
+                                    v
+   +--------------------+  Vector Matching  +---------------------+
+   | Target JD / Role   |==================>| RAG Context Engine  |
+   | Requirements Vector|   Cosine Sim.     | (Top-K Context)     |
+   +--------------------+                   +----------+----------+
+                                                       |
+                                                       v
+                                            +----------+----------+
+                                            |  5-Pillar ATS Engine|
+                                            +----------+----------+
+                                                       |
+        +------------------+------------------+--------+---------+------------------+
+        |                  |                  |                  |                  |
+        v                  v                  v                  v                  v
++---------------+  +---------------+  +---------------+  +---------------+  +---------------+
+| ATS Score &   |  | Categorized   |  | Actionable AI |  | Keyword Gap   |  | Interactive   |
+| 5-Pillar Gauge|  | ATS Mistakes  |  | Bullet Rewrites| | Analysis      |  | Resume Heatmap|
++---------------+  +---------------+  +---------------+  +---------------+  +---------------+
 
-## React Compiler
+⚙️ Steps to Run the Project
+1. Navigate to the Project Folder
+bash
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Expanding the Oxlint configuration
+cd C:\Users\vdman\.gemini\antigravity\scratch\rag-resume-analyzer
+2. Install Dependencies
+bash
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+
+npm install
+3. Run Development Mode
+To launch the hot-reloading development server:
+
+bash
+
+
+npm run dev
+Open your browser at 👉 http://localhost:3000/
+
+4. Build for Production
+To generate an optimized production bundle:
+
+bash
+
+
+npm run build
+📂 Project Structure
+src/rag/vectorStore.js: Client-side TF-IDF vectorizer & Cosine Similarity search engine.
+src/rag/knowledgeBase.js: Built-in ATS guidelines, action verb dictionary, weak passive phrases, and role keyword profiles.
+src/rag/parser.js: Client-side PDF parser built with pdfjs-dist.
+src/rag/analyzer.js: 5-pillar ATS scoring algorithm (Impact, Keywords, Formatting, Brevity, Completeness), mistake detector & rewrite engine.
+src/components/: Modular UI components for Score Gauge, Mistakes Inspector, Before/After AI Rewrites, Keyword Analysis, and PDF/JSON Export.
